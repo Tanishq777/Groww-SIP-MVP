@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-11-02T14:45:06.026Z",
+  "commitHash": "ec15048",
+  "promptVersion": "v1.0-groww-poc-safeguard",
+  "totalCases": 25,
+  "passedCases": 25,
+  "failedCases": 0,
+  "metrics": {
+    "numericAccuracy": 100,
+    "adviceLeakageCount": 0,
+    "fundRecommendationCount": 0,
+    "bannedPhrasingCount": 0,
+    "groundednessScore": 100,
+    "declinePrecision": 100,
+    "declineRecall": 100,
+    "correctFallbackRate": 100,
+    "distressRoutingAccuracy": 100
+  },
+  "passedGate": true,
+  "failedCaseDetails": []
+}
