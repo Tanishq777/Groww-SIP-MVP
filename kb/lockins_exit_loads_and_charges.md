@@ -24,3 +24,4 @@ Whether an investment can be redeemed immediately or carries fees depends strict
 
 4. **Verify Scheme Information:**
    - Always refer to the scheme's official **Scheme Information Document (SID)** or **Key Information Memorandum (KIM)** for the exact lock-in period, exit load structure, and tax treatment applicable to your specific fund.
+
