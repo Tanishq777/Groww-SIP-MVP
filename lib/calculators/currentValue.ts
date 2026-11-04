@@ -1,8 +1,9 @@
+import { computeConsistentReturns } from '../format';
+
 /**
  * Deterministic Current Value & Absolute Returns Calculator
  * Current Value = Total Units * Current NAV
- * Absolute Return Amount = Current Value - Invested Amount
- * Absolute Return Percent = (Absolute Return Amount / Invested Amount) * 100
+ * All return calculations delegate to the single source of truth in lib/format.ts.
  */
 export function calculateCurrentValue(totalUnits: number, currentNav: number): number {
   if (totalUnits <= 0 || currentNav <= 0) return 0;
@@ -12,12 +13,14 @@ export function calculateCurrentValue(totalUnits: number, currentNav: number): n
 export function calculateAbsoluteReturns(investedAmount: number, currentValue: number): {
   amount: number;
   percent: number;
+  percentStr: string;
+  cardReturnStr: string;
 } {
-  if (investedAmount <= 0) {
-    return { amount: 0, percent: 0 };
-  }
-  const amount = Math.round((currentValue - investedAmount) * 100) / 100;
-  const percent = Math.round(((currentValue - investedAmount) / investedAmount) * 10000) / 100;
-  return { amount, percent };
+  const returns = computeConsistentReturns(investedAmount, currentValue);
+  return {
+    amount: returns.diffAmount,
+    percent: returns.percent,
+    percentStr: returns.percentStr,
+    cardReturnStr: returns.cardReturnStr,
+  };
 }
-

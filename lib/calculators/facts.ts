@@ -5,6 +5,7 @@ import { calculateAverageNavCost } from './averageCost';
 import { calculateXirr } from './xirr';
 import { calculateExpectedAllotmentDate } from './allotmentLag';
 import { getBounceFeeDetails } from './fees';
+import { isEarlyHistory } from '../format';
 
 export function computeFacts(sip: SIPItem, scenarioId: ScenarioId, asOfDate: Date = new Date('2026-11-02')): DeterministicFacts {
   const investedAmount = calculateInvestedTotal(sip.instalments);
@@ -48,6 +49,9 @@ export function computeFacts(sip: SIPItem, scenarioId: ScenarioId, asOfDate: Dat
   const diffTime = nextDue.getTime() - asOfDate.getTime();
   const daysUntilNextDebit = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
+  const asOfDateStr = asOfDate.toISOString().slice(0, 10);
+  const isEarly = isEarlyHistory(sip.startDate, asOfDateStr);
+
   return {
     scenarioId,
     userName: 'T',
@@ -59,8 +63,12 @@ export function computeFacts(sip: SIPItem, scenarioId: ScenarioId, asOfDate: Dat
     totalUnitsAllotted: totalUnits,
     currentNav: sip.currentNav,
     currentValue: curValue,
+    currentValueAmount: curValue,
     absoluteReturnAmount: returns.amount,
     absoluteReturnPercent: returns.percent,
+    returnPercentStr: returns.percentStr,
+    cardReturnStr: returns.cardReturnStr,
+    isEarlyView: isEarly,
     averageNavCost: avgCost,
     xirrPercent: xirrResult.xirrPercent,
     xirrReliabilityNotice: xirrResult.reliabilityNotice,
@@ -80,4 +88,3 @@ export function computeFacts(sip: SIPItem, scenarioId: ScenarioId, asOfDate: Dat
     restingInstalmentsCount: pausedCount,
   };
 }
-

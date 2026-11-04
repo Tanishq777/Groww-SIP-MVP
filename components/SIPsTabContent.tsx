@@ -33,7 +33,8 @@ export function SIPsTabContent({
   onOpenCompanionWithPrompt,
   onOpenStopMenu,
 }: SIPsTabContentProps) {
-  const [showReturns, setShowReturns] = useState(false);
+  // If not early view (>90 days), show returns by default; if early view, off by default
+  const [showReturns, setShowReturns] = useState(!facts.isEarlyView);
   const [sipName, setSipName] = useState(sip.sipName || 'My First SIP');
   const [sipWhy, setSipWhy] = useState(sip.sipIntentWhy || 'Disciplined long-term savings habit');
   const [editingName, setEditingName] = useState(false);
@@ -240,7 +241,7 @@ export function SIPsTabContent({
 
               <div>
                 <span className="text-[11px] text-[#7C7E8C] uppercase font-semibold">
-                  Permanent Units Earned
+                  Units Earned
                 </span>
                 <p className="text-xl font-bold text-[#1E222B] mt-0.5">
                   {facts.totalUnitsAllotted} units
@@ -288,14 +289,14 @@ export function SIPsTabContent({
                           facts.absoluteReturnAmount < 0 ? 'text-[#EB5B3C]' : 'text-[#00D09C]'
                         }`}
                       >
-                        {facts.absoluteReturnAmount < 0 ? '-' : '+'}₹{Math.abs(facts.absoluteReturnAmount)} ({facts.absoluteReturnPercent}%)
+                        {facts.cardReturnStr}
                       </p>
                     </div>
                   </div>
 
-                  {facts.xirrReliabilityNotice && (
+                  {facts.isEarlyView && (
                     <div className="text-[11px] text-[#B45309] bg-[#FFFBEB] p-2 rounded border border-[#FDE68A]">
-                      ℹ️ <strong>Honest Disclosure:</strong> {facts.xirrReliabilityNotice}. Short-term annualized percentages are mathematically volatile.
+                      Short history, so this number swings a lot.
                     </div>
                   )}
                 </div>

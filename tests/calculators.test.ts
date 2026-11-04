@@ -112,3 +112,66 @@ describe('Deterministic Calculators', () => {
   });
 });
 
+describe('Fix 1: Early View (<90 Days) Verification', () => {
+  it('EARLY_HISTORY_DAYS is defined as 90', async () => {
+    const { EARLY_HISTORY_DAYS } = await import('../lib/format');
+    expect(EARLY_HISTORY_DAYS).toBe(90);
+  });
+
+  it('correctly classifies demo scenarios into early view or mature view', async () => {
+    const { getScenarioData, SCENARIOS } = await import('../lib/mockData');
+    
+    // Scenarios under 90 days -> isEarlyView: true
+    expect(getScenarioData('A').facts.isEarlyView).toBe(true); // 61 days
+    expect(getScenarioData('B').facts.isEarlyView).toBe(true); // 0 days
+    expect(getScenarioData('C').facts.isEarlyView).toBe(true); // 31 days
+    expect(getScenarioData('D').facts.isEarlyView).toBe(true); // 57 days
+    expect(getScenarioData('G').facts.isEarlyView).toBe(true); // 61 days
+
+    // Scenarios past 90 days -> isEarlyView: false
+    expect(getScenarioData('E').facts.isEarlyView).toBe(false); // 92 days
+    expect(getScenarioData('F').facts.isEarlyView).toBe(false); // 273 days
+  });
+});
+
+describe('Fix 2: One Source of Truth & Cross-Surface Numeric Consistency', () => {
+  it('Scenario A returns round to -4.87% half away from zero in integer paise', async () => {
+    const { computeConsistentReturns } = await import('../lib/format');
+    const returns = computeConsistentReturns(2000.00, 1902.70);
+
+    expect(returns.absoluteReturnAmount).toBe(-97.30);
+    expect(returns.returnPercentStr).toBe('-4.87%');
+    expect(returns.cardReturnStr).toBe('-₹97.30 (-4.87%)');
+  });
+
+  it('every demo scenario produces identical return percentage and rounded amounts across facts and formatting', async () => {
+    const { getScenarioData, SCENARIOS } = await import('../lib/mockData');
+    const { computeConsistentReturns } = await import('../lib/format');
+
+    for (const scenarioId of Object.keys(SCENARIOS) as (keyof typeof SCENARIOS)[]) {
+      const { facts } = getScenarioData(scenarioId);
+      const computed = computeConsistentReturns(facts.totalInvestedAmount, facts.currentValueAmount);
+
+      // Verify facts object exactly equals shared module computed return
+      expect(facts.returnPercentStr).toBe(computed.returnPercentStr);
+      expect(facts.cardReturnStr).toBe(computed.cardReturnStr);
+      expect(facts.absoluteReturnAmount).toBe(computed.absoluteReturnAmount);
+    }
+  });
+
+  it('fails if any UI component performs ad-hoc return percentage formatting', async () => {
+    const fs = await import('fs');
+    const path = await import('path');
+    const componentsDir = path.join(process.cwd(), 'components');
+    const files = fs.readdirSync(componentsDir).filter(f => f.endsWith('.tsx') || f.endsWith('.ts'));
+
+    for (const file of files) {
+      const content = fs.readFileSync(path.join(componentsDir, file), 'utf-8');
+      // Must not contain ad-hoc manual percent calculations like "/ totalInvested * 100" or raw .toFixed(2) %
+      expect(content).not.toMatch(/\/ (totalInvested|investedAmount|facts\.totalInvestedAmount) \* 100/);
+      expect(content).not.toMatch(/\.toFixed\(2\)\s*\+\s*['"]%/);
+    }
+  });
+});
+
+

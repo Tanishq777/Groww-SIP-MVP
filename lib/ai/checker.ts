@@ -61,10 +61,25 @@ const BANNED_URGENCY_AND_FEAR = [
   /\branked in the top\b/i,
 ];
 
+// Blanket and unverifiable claims per Fix 3
+const BANNED_BLANKET_CLAIMS = [
+  /\bzero lock-?in\b/i,
+  /\bno lock-?in\b/i,
+  /\bcancel anytime\b/i,
+  /\bno charges?\b/i,
+  /\bno penalt(y|ies)\b/i,
+  /\bwithout (any )?charges?\b/i,
+  /\bwithout (any )?penalt(y|ies)\b/i,
+  /\bbina kisi (charges?|penalty|shulk)\b/i,
+  /\bfree to cancel\b/i,
+  /\bpermanent units?\b/i,
+];
+
 export function runRuleChecker(
   answer: string,
   numbersUsed: (number | string)[],
-  facts: DeterministicFacts
+  facts: DeterministicFacts,
+  sources?: string[]
 ): CheckerResult {
   const violations: string[] = [];
 
@@ -104,7 +119,51 @@ export function runRuleChecker(
     }
   }
 
-  // 6. Deterministic Arithmetic & Number Cross-Check
+  // 6. Blanket Claims Check (Fix 3)
+  for (const regex of BANNED_BLANKET_CLAIMS) {
+    if (regex.test(answer)) {
+      violations.push(`Unverifiable blanket claim violation: matched ${regex}`);
+    }
+  }
+
+  // 7. Sourced Claims on Lock-in, Exit Loads, Charges, Penalties, Tax, Guaranteed (Fix 3.3)
+  const containsRestrictedTerms = /\b(lock-?ins?|exit loads?|penalt(y|ies)|charges?|taxes?|taxation|guaranteed)\b/i.test(answer);
+  if (containsRestrictedTerms) {
+    const validSources = [
+      'Lock-ins, Exit Loads and Charges',
+      'Bank Return Charges vs Platform Fees',
+      'SEBI Investor Protection Guidelines',
+      'Tele-MANAS Toll-Free National Helpline (14416)',
+      'Options When You Need to Adjust Your SIP'
+    ];
+    const hasGroundedSource = sources && sources.some(s =>
+      validSources.some(vs => s.toLowerCase().includes(vs.toLowerCase()))
+    );
+    if (!hasGroundedSource) {
+      violations.push(
+        `Ungrounded claim: Statement regarding lock-in, exit load, charges, penalties, tax, or guarantee must cite a sourced KB article.`
+      );
+    }
+  }
+
+  // 8. Cross-Surface Return Percentage Consistency Check (Fix 2)
+  const percentMatches = answer.match(/([+-]?\d+\.\d+)%/g);
+  if (percentMatches && facts.returnPercentStr) {
+    for (const match of percentMatches) {
+      const cleanMatch = match.trim();
+      // If it looks like a return percentage for the current scenario
+      const absReturnP = Math.abs(facts.absoluteReturnPercent).toFixed(2);
+      if (cleanMatch.includes(absReturnP) || cleanMatch.includes('4.8')) {
+        if (cleanMatch !== facts.returnPercentStr && cleanMatch !== facts.returnPercentStr.replace('+', '')) {
+          violations.push(
+            `Cross-surface numeric inconsistency: Return percentage "${cleanMatch}" does not match canonical "${facts.returnPercentStr}".`
+          );
+        }
+      }
+    }
+  }
+
+  // 9. Deterministic Arithmetic & Number Cross-Check
   // Extract all numbers from the answer text
   const extractedNumbers = answer.match(/\b\d+(\.\d+)?\b/g) || [];
   
@@ -112,6 +171,7 @@ export function runRuleChecker(
   const allowedConstantNumbers = new Set([
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '12', '15', '30', '365', // Standard time units, months, days
     '100', // Floor ₹100
+    '80', // Section 80C ELSS
     '14416', // Tele-MANAS helpline
     '0', '0.00',
     '250', // Bank bounce fee
@@ -127,7 +187,9 @@ export function runRuleChecker(
     facts.currentNav.toString(),
     facts.currentValue.toString(),
     Math.abs(facts.absoluteReturnAmount).toString(),
+    Math.abs(facts.absoluteReturnAmount).toFixed(2),
     Math.abs(facts.absoluteReturnPercent).toString(),
+    facts.returnPercentStr ? facts.returnPercentStr.replace('%', '').replace('-', '').replace('+', '') : '',
     facts.averageNavCost.toString(),
     facts.daysUntilNextDebit.toString(),
     facts.bankBounceFeeAmount.toString(),

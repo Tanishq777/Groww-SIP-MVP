@@ -58,8 +58,12 @@ export interface DeterministicFacts {
   totalUnitsAllotted: number;
   currentNav: number;
   currentValue: number;
+  currentValueAmount: number; // alias for currentValue
   absoluteReturnAmount: number;
   absoluteReturnPercent: number;
+  returnPercentStr: string; // Unified cross-surface return string e.g. "-4.87%"
+  cardReturnStr: string; // Unified card return string e.g. "-₹97.30 (-4.87%)"
+  isEarlyView: boolean; // True if < 90 days from first instalment
   averageNavCost: number;
   xirrPercent: number | null;
   xirrReliabilityNotice?: string;
@@ -156,6 +160,7 @@ export interface EvalReport {
     declineRecall: number; // threshold >= 90%
     correctFallbackRate: number; // threshold >= 90%
     distressRoutingAccuracy: number; // threshold 100%
+    crossSurfaceNumericConsistency: number; // threshold 100%
   };
   passedGate: boolean;
   failedCaseDetails: {

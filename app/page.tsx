@@ -15,6 +15,7 @@ import { GrowwFooter } from '@/components/GrowwFooter';
 import { ScenarioId } from '@/lib/types';
 import { getScenarioData, SCENARIOS } from '@/lib/mockData';
 import { AlertTriangle, Info, Bell, CheckCircle } from 'lucide-react';
+import { formatRupees } from '@/lib/format';
 
 export default function DashboardPage() {
   const [activeSubTab, setActiveSubTab] = useState<SubTabType>('dashboard');
@@ -25,12 +26,14 @@ export default function DashboardPage() {
   const [preferredLanguage, setPreferredLanguage] = useState<'en' | 'hinglish'>('en');
   const [stopMenuOpen, setStopMenuOpen] = useState(false);
   const [gatePassed, setGatePassed] = useState(true);
+  const [showReturns, setShowReturns] = useState(false);
 
   const { scenario, facts } = getScenarioData(currentScenario);
 
   function handleScenarioChange(id: ScenarioId) {
     setCurrentScenario(id);
     setCompanionInitialPrompt(undefined);
+    setShowReturns(false);
     if (id === 'E') {
       setStopMenuOpen(true);
     } else if (id === 'G') {
@@ -81,47 +84,55 @@ export default function DashboardPage() {
         {activeSubTab === 'dashboard' && (
           <div className="max-w-[1240px] mx-auto px-4 py-8">
             {/* Top Scenario Banner Notice (if applicable) */}
-            {scenario.bannerNotice && (
-              <div
-                className={`mb-6 p-4 rounded-2xl border flex items-center justify-between flex-wrap gap-3 ${
-                  scenario.bannerNotice.type === 'alert'
-                    ? 'bg-[#FDF2F0] border-[#F9CBC3] text-[#EB5B3C]'
-                    : scenario.bannerNotice.type === 'warning'
-                    ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
-                    : 'bg-[#E6FAF5] border-[#B3F2DF] text-[#008764]'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  {scenario.bannerNotice.type === 'alert' ? (
-                    <AlertTriangle className="w-5 h-5 flex-shrink-0" />
-                  ) : scenario.bannerNotice.type === 'warning' ? (
-                    <Info className="w-5 h-5 flex-shrink-0" />
-                  ) : (
-                    <CheckCircle className="w-5 h-5 flex-shrink-0" />
-                  )}
-                  <div>
-                    <p className="text-xs font-bold">{scenario.bannerNotice.title}</p>
-                    <p className="text-xs opacity-90 mt-0.5">{scenario.bannerNotice.message}</p>
+            {scenario.bannerNotice && (() => {
+              const bannerTitle =
+                currentScenario === 'A'
+                  ? showReturns
+                    ? `Your total returns are currently -₹97.30 (${facts.returnPercentStr})`
+                    : `Current value is ${formatRupees(facts.currentValueAmount, 'sentence')} against ${formatRupees(facts.totalInvestedAmount, 'card')} invested`
+                  : scenario.bannerNotice.title;
+              return (
+                <div
+                  className={`mb-6 p-4 rounded-2xl border flex items-center justify-between flex-wrap gap-3 ${
+                    scenario.bannerNotice.type === 'alert'
+                      ? 'bg-[#FDF2F0] border-[#F9CBC3] text-[#EB5B3C]'
+                      : scenario.bannerNotice.type === 'warning'
+                      ? 'bg-[#FFFBEB] border-[#FDE68A] text-[#B45309]'
+                      : 'bg-[#E6FAF5] border-[#B3F2DF] text-[#008764]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    {scenario.bannerNotice.type === 'alert' ? (
+                      <AlertTriangle className="w-5 h-5 flex-shrink-0" />
+                    ) : scenario.bannerNotice.type === 'warning' ? (
+                      <Info className="w-5 h-5 flex-shrink-0" />
+                    ) : (
+                      <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                    )}
+                    <div>
+                      <p className="text-xs font-bold">{bannerTitle}</p>
+                      <p className="text-xs opacity-90 mt-0.5">{scenario.bannerNotice.message}</p>
+                    </div>
                   </div>
-                </div>
 
-                {scenario.bannerNotice.actionLabel && (
-                  <button
-                    onClick={() => {
-                      if (scenario.bannerNotice?.actionType === 'move_date') {
-                        setStopMenuOpen(true);
-                      } else {
-                        setCompanionActive(true);
-                        setCompanionInitialPrompt(scenario.bannerNotice?.message);
-                      }
-                    }}
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white shadow-sm border hover:bg-opacity-90 transition-all text-[#1E222B]"
-                  >
-                    {scenario.bannerNotice.actionLabel} →
-                  </button>
-                )}
-              </div>
-            )}
+                  {scenario.bannerNotice.actionLabel && (
+                    <button
+                      onClick={() => {
+                        if (scenario.bannerNotice?.actionType === 'move_date') {
+                          setStopMenuOpen(true);
+                        } else {
+                          setCompanionActive(true);
+                          setCompanionInitialPrompt(scenario.bannerNotice?.message);
+                        }
+                      }}
+                      className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white shadow-sm border hover:bg-opacity-90 transition-all text-[#1E222B]"
+                    >
+                      {scenario.bannerNotice.actionLabel} →
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Dashboard 2-Column Grid matching screenshot */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -146,6 +157,8 @@ export default function DashboardPage() {
                     setCompanionActive(true);
                   }}
                   onExplainNumber={handleExplainNumber}
+                  showReturnsOverride={showReturns}
+                  onToggleShowReturns={() => setShowReturns(!showReturns)}
                 />
               </div>
 

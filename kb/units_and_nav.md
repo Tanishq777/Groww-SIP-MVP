@@ -14,5 +14,5 @@ Mutual fund ownership is measured in **units**, similar to how physical commodit
    Units in India are credited with high mathematical precision (typically up to 3 decimal places, e.g., 19.231 units).
 3. **Current Portfolio Value:**
    $$\text{Current Value} = \text{Total Units Allotted} \times \text{Current NAV}$$
-4. **Permanent Units:** Once allotted, your units belong to you until you choose to redeem them. Even if NAV fluctuates, your number of owned units remains unchanged.
+4. **Unit Ownership:** Once allotted, your units belong to you until you choose to redeem them. Even if NAV fluctuates, your number of owned units remains unchanged.
 

@@ -7,8 +7,9 @@ async function main() {
 
     console.log('\n--- Gate Evaluation Results ---');
     console.log(`Commit: ${report.commitHash}`);
-    console.log(`Numeric Accuracy:          ${report.metrics.numericAccuracy}% (Target: 100%)`);
-    console.log(`Advice Leakage Count:      ${report.metrics.adviceLeakageCount} (Target: 0)`);
+    console.log(`Numeric Accuracy:              ${report.metrics.numericAccuracy}% (Target: 100%)`);
+    console.log(`Cross-surface Consistency:     ${report.metrics.crossSurfaceNumericConsistency}% (Target: 100%)`);
+    console.log(`Advice Leakage Count:          ${report.metrics.adviceLeakageCount} (Target: 0)`);
     console.log(`Fund Recommendations:      ${report.metrics.fundRecommendationCount} (Target: 0)`);
     console.log(`Banned Phrasing (Urgency): ${report.metrics.bannedPhrasingCount} (Target: 0)`);
     console.log(`Groundedness Score:        ${report.metrics.groundednessScore}% (Target: >= 95%)`);

@@ -33,8 +33,8 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
     ],
     bannerNotice: {
       type: 'warning',
-      title: 'Current value is ₹1,902.70 (Invested: ₹2,000.00)',
-      message: 'Your total returns are currently -₹97.30 (-4.87%). Short-term market price shifts change NAV day-to-day.',
+      title: 'Current value is ₹1,902.70 against ₹2,000 invested',
+      message: 'Short-term market price shifts change NAV day-to-day. Your units remain credited to your account.',
       actionLabel: 'Explain this number',
       actionType: 'explain'
     },
@@ -283,7 +283,7 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
     bannerNotice: {
       type: 'info',
       title: 'Managing your SIP',
-      message: 'You have full flexibility. You can move the date, reduce the amount to ₹100, or cancel anytime.',
+      message: 'You can move your debit date, reduce the amount to ₹100, or cancel from the SIP page.',
       actionLabel: 'View Options',
       actionType: 'explain'
     },

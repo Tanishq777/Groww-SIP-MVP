@@ -173,7 +173,7 @@ export function StopMenuModal({
                   <div className="flex-1">
                     <p className="text-xs font-bold text-[#EB5B3C]">3. Cancel SIP (One Tap)</p>
                     <p className="text-[11px] text-[#7C7E8C]">
-                      Permanently stop future debits. Your existing units remain completely safe in your portfolio.
+                      Stop future debits. Your existing units remain safe in your portfolio.
                     </p>
                   </div>
                 </div>

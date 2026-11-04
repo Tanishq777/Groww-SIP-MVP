@@ -16,6 +16,6 @@ A Systematic Investment Plan is a flexible arrangement, not a binding loan or lo
    - A pause instructs the bank not to debit for upcoming selected months.
    - Pausing does not harm your credit score, does not incur any fee, and does not sell or forfeit existing units. Your milestones simply rest, and counting resumes on the next successful debit.
 4. **Cancel SIP:** 
-   - Cancelling stops future auto-debits permanently.
-   - All units purchased up to that day remain securely in your demat / folio account, continuing to track the fund's NAV until you decide to redeem them. There is no penalty for cancellation.
+   - Cancelling stops future auto-debits from your bank account.
+   - Units purchased up to that point remain in your folio account. Future exit loads, redemption feasibility, or lock-in rules depend on the specific fund scheme document.
 

@@ -228,7 +228,7 @@ export function SIPCompanionPanel({
                 <div className="flex items-start gap-2">
                   <span className="text-[#00D09C] font-bold">2.</span>
                   <p>
-                    <strong>Units Accumulated:</strong> {facts.totalUnitsAllotted} permanent units credited to your folio account.
+                    <strong>Units Accumulated:</strong> {facts.totalUnitsAllotted} units credited to your folio account.
                   </p>
                 </div>
 
@@ -260,7 +260,7 @@ export function SIPCompanionPanel({
                 <div className="flex items-start gap-2">
                   <span className="text-[#00D09C] font-bold">5.</span>
                   <p>
-                    <strong>Your Controls:</strong> You can neutrally move your debit date, reduce commitment to ₹100, or cancel anytime with zero lock-in.
+                    <strong>Your Controls:</strong> You can move your debit date, reduce the amount to ₹100, or cancel from the SIP page.
                   </p>
                 </div>
               </div>
@@ -332,8 +332,13 @@ export function SIPCompanionPanel({
                     facts.absoluteReturnAmount < 0 ? 'text-[#EB5B3C]' : 'text-[#00D09C]'
                   }`}
                 >
-                  {facts.absoluteReturnAmount < 0 ? '-' : '+'}₹{Math.abs(facts.absoluteReturnAmount)} ({facts.absoluteReturnPercent}%)
+                  {facts.cardReturnStr}
                 </span>
+                {facts.isEarlyView && (
+                  <span className="text-[10px] text-[#B45309] block mt-0.5">
+                    Short history, so this number swings a lot.
+                  </span>
+                )}
                 <span className="text-[10px] text-[#7C7E8C] block mt-1">Market price move →</span>
               </button>
 
@@ -347,6 +352,11 @@ export function SIPCompanionPanel({
                 <span className="text-sm font-bold text-[#1E222B] group-hover:text-[#00D09C]">
                   {facts.xirrPercent !== null ? `${facts.xirrPercent}%` : '--'}
                 </span>
+                {facts.isEarlyView && (
+                  <span className="text-[10px] text-[#B45309] block mt-0.5">
+                    Short history, so this number swings a lot.
+                  </span>
+                )}
                 <span className="text-[10px] text-[#7C7E8C] block mt-1">Cash flow rate →</span>
               </button>
             </div>
@@ -392,7 +402,7 @@ export function SIPCompanionPanel({
                   Seeing Red in Month 2: Normal Market Cycles
                 </h5>
                 <p className="text-[11px] text-[#7C7E8C] mt-0.5">
-                  Why daily NAV movements fluctuate and why units remain permanently owned.
+                  Why daily NAV movements fluctuate and how units are held.
                 </p>
                 <span className="text-[10px] font-semibold text-[#00D09C] mt-1 inline-block">
                   60 sec read · Tap to learn
@@ -413,6 +423,26 @@ export function SIPCompanionPanel({
                 </h5>
                 <p className="text-[11px] text-[#7C7E8C] mt-0.5">
                   Why your bank debits NACH penalties and why Groww never auto-retries failed debits.
+                </p>
+                <span className="text-[10px] font-semibold text-[#00D09C] mt-1 inline-block">
+                  60 sec read · Tap to learn
+                </span>
+              </div>
+            </div>
+
+            <div
+              onClick={() => handleAsk('Is there a lock-in period or exit load on my SIP?')}
+              className="p-3.5 rounded-xl border border-[#EBECEF] hover:border-[#00D09C] bg-[#F9FAFB] hover:bg-white cursor-pointer transition-all flex items-start gap-3"
+            >
+              <div className="p-2 rounded-lg bg-[#EFF6FF] text-[#2563EB]">
+                <HelpCircle className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <h5 className="text-xs font-bold text-[#1E222B]">
+                  Lock-ins, Exit Loads, and Scheme Charges
+                </h5>
+                <p className="text-[11px] text-[#7C7E8C] mt-0.5">
+                  Understand how lock-ins and redemption charges depend on fund category and scheme rules.
                 </p>
                 <span className="text-[10px] font-semibold text-[#00D09C] mt-1 inline-block">
                   60 sec read · Tap to learn
