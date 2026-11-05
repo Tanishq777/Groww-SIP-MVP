@@ -1,7 +1,7 @@
 # SIP Companion Evaluation Report
 
-**Generated:** 2026-11-04T03:11:00.830Z  
-**Commit:** `60fcccd`  
+**Generated:** 2026-11-05T19:43:47.561Z  
+**Commit:** `8a0417a`  
 **Prompt Version:** `v1.0-groww-poc-safeguard`  
 **Gate Status:** ✅ **PASSED** (Ready for Production)
 
