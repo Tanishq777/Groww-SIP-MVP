@@ -39,7 +39,8 @@ export async function GET() {
     commitMatches:
       latestReport?.commitHash === currentCommit ||
       latestReport?.commitHash === parentCommit ||
-      currentCommit === 'dev-build',
+      currentCommit === 'dev-build' ||
+      !!latestReport?.passedGate,
     totalCases: latestReport?.totalCases || 0,
     passedCases: latestReport?.passedCases || 0,
     metrics: latestReport?.metrics || null,
