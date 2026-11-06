@@ -130,3 +130,67 @@ export function isEarlyHistory(startDateStr: string, asOfDateStr: string = '2026
     return false;
   }
 }
+
+export interface OneDayReturnDetails {
+  amount: number;
+  percent: number;
+  str: string; // e.g. "-₹11.77 (-0.61%)" or "NA (NA%)"
+  isNegative: boolean;
+  isAvailable: boolean;
+}
+
+/**
+ * Calculates 1D return based on total units and previous day's NAV.
+ * If units are 0 or previousNav is absent, returns 'NA (NA%)' matching Groww empty state.
+ */
+export function computeOneDayReturns(
+  totalUnits: number,
+  currentNav: number,
+  previousNav?: number
+): OneDayReturnDetails {
+  if (
+    !totalUnits ||
+    totalUnits <= 0 ||
+    !previousNav ||
+    previousNav <= 0 ||
+    !currentNav ||
+    currentNav <= 0
+  ) {
+    return {
+      amount: 0,
+      percent: 0,
+      str: 'NA (NA%)',
+      isNegative: false,
+      isAvailable: false,
+    };
+  }
+
+  const prevDec = new Decimal(previousNav);
+  const curDec = new Decimal(currentNav);
+  const unitsDec = new Decimal(totalUnits);
+
+  const diffNavDec = curDec.minus(prevDec);
+  const diffAmountDec = unitsDec.times(diffNavDec);
+  const diffAmount = diffAmountDec.toDecimalPlaces(2, Decimal.ROUND_HALF_UP).toNumber();
+
+  const percentDec = diffNavDec.dividedBy(prevDec).times(100);
+  const percent = percentDec.toDecimalPlaces(2, Decimal.ROUND_HALF_UP).toNumber();
+
+  const isNegative = diffAmount < 0;
+  const isZero = diffAmount === 0;
+  const sign = isNegative ? '-' : isZero ? '' : '+';
+
+  const absAmount = Math.abs(diffAmount).toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  const absPercent = Math.abs(percent).toFixed(2);
+
+  return {
+    amount: diffAmount,
+    percent,
+    str: `${sign}₹${absAmount} (${sign}${absPercent}%)`,
+    isNegative,
+    isAvailable: true,
+  };
+}

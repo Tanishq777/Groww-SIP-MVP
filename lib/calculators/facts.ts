@@ -5,13 +5,14 @@ import { calculateAverageNavCost } from './averageCost';
 import { calculateXirr } from './xirr';
 import { calculateExpectedAllotmentDate } from './allotmentLag';
 import { getBounceFeeDetails } from './fees';
-import { isEarlyHistory } from '../format';
+import { isEarlyHistory, computeOneDayReturns } from '../format';
 
 export function computeFacts(sip: SIPItem, scenarioId: ScenarioId, asOfDate: Date = new Date('2026-11-02')): DeterministicFacts {
   const investedAmount = calculateInvestedTotal(sip.instalments);
   const totalUnits = calculateTotalUnits(sip.instalments);
   const curValue = calculateCurrentValue(totalUnits, sip.currentNav);
   const returns = calculateAbsoluteReturns(investedAmount, curValue);
+  const oneDayReturn = computeOneDayReturns(totalUnits, sip.currentNav, sip.previousNav);
   const avgCost = calculateAverageNavCost(investedAmount, totalUnits);
   
   const xirrResult = calculateXirr(sip.instalments, curValue, asOfDate);
@@ -62,12 +63,17 @@ export function computeFacts(sip: SIPItem, scenarioId: ScenarioId, asOfDate: Dat
     totalInvestedAmount: investedAmount,
     totalUnitsAllotted: totalUnits,
     currentNav: sip.currentNav,
+    previousNav: sip.previousNav,
     currentValue: curValue,
     currentValueAmount: curValue,
     absoluteReturnAmount: returns.amount,
     absoluteReturnPercent: returns.percent,
     returnPercentStr: returns.percentStr,
     cardReturnStr: returns.cardReturnStr,
+    oneDayReturnStr: oneDayReturn.str,
+    oneDayReturnAmount: oneDayReturn.amount,
+    oneDayReturnPercent: oneDayReturn.percent,
+    oneDayReturnIsNegative: oneDayReturn.isNegative,
     isEarlyView: isEarly,
     averageNavCost: avgCost,
     xirrPercent: xirrResult.xirrPercent,

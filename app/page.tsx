@@ -18,7 +18,7 @@ import { AlertTriangle, Info, Bell, CheckCircle } from 'lucide-react';
 import { formatRupees } from '@/lib/format';
 
 export default function DashboardPage() {
-  const [activeSubTab, setActiveSubTab] = useState<SubTabType>('dashboard');
+  const [activeSubTab, setActiveSubTab] = useState<SubTabType>('sips');
   const [currentScenario, setCurrentScenario] = useState<ScenarioId>('A');
   const [companionActive, setCompanionActive] = useState<boolean>(true); // Active so user immediately experiences hero feature
   const [selectedFund, setSelectedFund] = useState<boolean>(true);
@@ -51,6 +51,8 @@ export default function DashboardPage() {
       setCompanionInitialPrompt('Explain my total invested amount and completed instalments');
     } else if (metric === 'returns') {
       setCompanionInitialPrompt('Explain my total returns and why it is showing red or green');
+    } else if (metric === '1dReturns') {
+      setCompanionInitialPrompt('What is 1D return and how is it calculated from NAV?');
     } else if (metric === 'xirr') {
       setCompanionInitialPrompt('Explain what XIRR is and why it swings in the early months');
     } else {

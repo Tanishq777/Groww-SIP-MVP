@@ -53,6 +53,7 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
       sipIntentWhy: 'Building an emergency cushion and long-term discipline',
       startDate: '2026-09-02',
       currentNav: 48.50,
+      previousNav: 48.80,
       instalments: [
         {
           id: 'inst-1',
@@ -121,6 +122,7 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
       sipIntentWhy: 'Disciplined monthly savings habit',
       startDate: '2026-11-02',
       currentNav: 50.00,
+      previousNav: 50.00,
       instalments: [
         {
           id: 'inst-b1',
@@ -172,6 +174,7 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
       sipIntentWhy: 'Financial independence fund',
       startDate: '2026-10-02',
       currentNav: 52.00,
+      previousNav: 51.50,
       instalments: [
         {
           id: 'inst-c1',
@@ -236,6 +239,7 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
       sipIntentWhy: 'Saving before spending',
       startDate: '2026-09-06',
       currentNav: 51.50,
+      previousNav: 51.20,
       instalments: [
         {
           id: 'inst-d1',
@@ -302,6 +306,7 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
       sipIntentWhy: 'Financial safety buffer for 2027',
       startDate: '2026-08-02',
       currentNav: 53.00,
+      previousNav: 52.40,
       instalments: [
         { id: 'inst-e1', instalmentNumber: 1, date: '2026-08-02', amount: 1000, status: 'successful', nav: 49.00, units: 20.408 },
         { id: 'inst-e2', instalmentNumber: 2, date: '2026-09-02', amount: 1000, status: 'successful', nav: 50.00, units: 20.000 },
@@ -350,6 +355,7 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
       sipIntentWhy: 'First 12-month investing journey',
       startDate: '2026-02-02',
       currentNav: 54.20,
+      previousNav: 53.80,
       instalments: [
         { id: 'inst-f1', instalmentNumber: 1, date: '2026-02-02', amount: 1000, status: 'successful', nav: 48.00, units: 20.833 },
         { id: 'inst-f2', instalmentNumber: 2, date: '2026-03-02', amount: 1000, status: 'successful', nav: 49.00, units: 20.408 },
@@ -402,6 +408,7 @@ export const SCENARIOS: Record<ScenarioId, ScenarioDefinition> = {
       sipIntentWhy: 'Saving for family security',
       startDate: '2026-09-02',
       currentNav: 47.00,
+      previousNav: 47.80,
       instalments: [
         { id: 'inst-g1', instalmentNumber: 1, date: '2026-09-02', amount: 1000, status: 'successful', nav: 50.00, units: 20.000 },
         { id: 'inst-g2', instalmentNumber: 2, date: '2026-10-02', amount: 1000, status: 'successful', nav: 51.00, units: 19.608 },

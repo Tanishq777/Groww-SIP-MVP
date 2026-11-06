@@ -45,6 +45,7 @@ export interface SIPItem {
   instalments: Instalment[];
   navHistory: NavHistoryPoint[];
   currentNav: number;
+  previousNav?: number;
 }
 
 export interface DeterministicFacts {
@@ -57,12 +58,17 @@ export interface DeterministicFacts {
   totalInvestedAmount: number;
   totalUnitsAllotted: number;
   currentNav: number;
+  previousNav?: number;
   currentValue: number;
   currentValueAmount: number; // alias for currentValue
   absoluteReturnAmount: number;
   absoluteReturnPercent: number;
   returnPercentStr: string; // Unified cross-surface return string e.g. "-4.87%"
   cardReturnStr: string; // Unified card return string e.g. "-₹97.30 (-4.87%)"
+  oneDayReturnStr: string; // Unified 1D return string e.g. "-₹11.77 (-0.61%)" or "NA (NA%)"
+  oneDayReturnAmount: number;
+  oneDayReturnPercent: number;
+  oneDayReturnIsNegative: boolean;
   isEarlyView: boolean; // True if < 90 days from first instalment
   averageNavCost: number;
   xirrPercent: number | null;

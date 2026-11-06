@@ -172,6 +172,29 @@ describe('Fix 2: One Source of Truth & Cross-Surface Numeric Consistency', () =>
       expect(content).not.toMatch(/\.toFixed\(2\)\s*\+\s*['"]%/);
     }
   });
+
+  it('computeOneDayReturns correctly handles negative, positive, and 0 units', async () => {
+    const { computeOneDayReturns } = await import('../lib/format');
+
+    // 0 units -> NA (NA%)
+    const zeroUnits = computeOneDayReturns(0, 50.00, 50.00);
+    expect(zeroUnits.str).toBe('NA (NA%)');
+    expect(zeroUnits.isAvailable).toBe(false);
+
+    // Scenario A: 39.231 units, 48.50 current, 48.80 prev -> -₹11.77 (-0.61%)
+    const scenA = computeOneDayReturns(39.231, 48.50, 48.80);
+    expect(scenA.amount).toBe(-11.77);
+    expect(scenA.percent).toBe(-0.61);
+    expect(scenA.str).toBe('-₹11.77 (-0.61%)');
+    expect(scenA.isNegative).toBe(true);
+
+    // Scenario C: 39.231 units, 52.00 current, 51.50 prev -> +₹19.62 (+0.97%)
+    const scenC = computeOneDayReturns(39.231, 52.00, 51.50);
+    expect(scenC.amount).toBe(19.62);
+    expect(scenC.percent).toBe(0.97);
+    expect(scenC.str).toBe('+₹19.62 (+0.97%)');
+    expect(scenC.isNegative).toBe(false);
+  });
 });
 
 

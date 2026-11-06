@@ -212,6 +212,22 @@ function generateGroundedAnswer(
     };
   }
 
+  // Question on 1D Returns
+  if (qLower.includes('1d return') || qLower.includes('1d returns') || qLower.includes('one day return') || qLower.includes('daily return')) {
+    const answer = isHinglish
+      ? `1D return aapke portfolio ki pichhle ek din ki value change dikhata hai. Yeh formula se nikalta hai: Total Units × (Aaj ki NAV - Kal ki NAV). Agar units abhi allot nahi hui hain, toh yeh NA dikhata hai.`
+      : `1D return represents the 1-day gain or loss on your holding, calculated as: Total Units × (Today's NAV - Yesterday's NAV). If your units have not yet been allotted, it displays as NA.`;
+
+    return {
+      answer,
+      answer_type: 'Concept',
+      sources: ['Mutual Fund Units and NAV Calculation'],
+      numbers_used: ['1'],
+      confidence: 'high',
+      language,
+    };
+  }
+
   // Question on e-mandate and failed debits (case-18)
   if (qLower.includes('mandate') || qLower.includes('e-mandate') || (qLower.includes('debit') && qLower.includes('fail'))) {
     const answer = isHinglish

@@ -193,6 +193,10 @@ export function runRuleChecker(
     facts.averageNavCost.toString(),
     facts.daysUntilNextDebit.toString(),
     facts.bankBounceFeeAmount.toString(),
+    Math.abs(facts.oneDayReturnAmount).toString(),
+    Math.abs(facts.oneDayReturnAmount).toFixed(2),
+    Math.abs(facts.oneDayReturnPercent).toString(),
+    Math.abs(facts.oneDayReturnPercent).toFixed(2),
     ...(facts.xirrPercent !== null ? [facts.xirrPercent.toString(), Math.abs(facts.xirrPercent).toString()] : []),
   ]);
 

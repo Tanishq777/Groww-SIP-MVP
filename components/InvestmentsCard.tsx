@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, ChevronRight, ChevronDown, BarChart2 } from 'lucide-react';
 import { DeterministicFacts } from '@/lib/types';
 import { formatRupees } from '@/lib/format';
+import { ImportFundsModal } from './ImportFundsModal';
 
 interface InvestmentsCardProps {
   facts: DeterministicFacts;
@@ -25,6 +26,7 @@ export function InvestmentsCard({
   const [showValues, setShowValues] = useState(true);
   const [showXirrDropdown, setShowXirrDropdown] = useState(false);
   const [localShowReturns, setLocalShowReturns] = useState(false);
+  const [importModalOpen, setImportModalOpen] = useState(false);
 
   const isEarlyView = facts.isEarlyView;
   // If not early view (> 90 days), returns show by default
@@ -150,10 +152,25 @@ export function InvestmentsCard({
           <div className="pt-2 border-t border-[#F1F3F6]">
             <div className="grid grid-cols-3 gap-2 text-left">
               {/* 1D Returns */}
-              <div className="p-1.5">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onExplainNumber?.('1dReturns');
+                }}
+                className="cursor-pointer hover:bg-[#F9FAFB] p-1.5 rounded transition-colors"
+                title="Click to explain 1D returns"
+              >
                 <p className="text-[12px] text-[#7C7E8C]">1D returns</p>
-                <p className="text-[14px] font-bold text-[#7C7E8C] mt-0.5">
-                  NA (NA%)
+                <p
+                  className={`text-[14px] font-bold mt-0.5 ${
+                    !facts.oneDayReturnStr || facts.oneDayReturnStr.includes('NA')
+                      ? 'text-[#7C7E8C]'
+                      : facts.oneDayReturnIsNegative
+                      ? 'text-[#EB5B3C]'
+                      : 'text-[#00D09C]'
+                  }`}
+                >
+                  {showValues ? facts.oneDayReturnStr : '••••'}
                 </p>
               </div>
 
@@ -251,12 +268,22 @@ export function InvestmentsCard({
       </div>
 
       {/* Import external funds row */}
-      <div className="mt-3 bg-white rounded-xl border border-[#EBECEF] px-4 py-3 flex items-center justify-between hover:bg-[#F9FAFB] cursor-pointer transition-colors shadow-sm">
+      <div
+        onClick={() => setImportModalOpen(true)}
+        className="mt-3 bg-white rounded-xl border border-[#EBECEF] px-4 py-3 flex items-center justify-between hover:bg-[#F9FAFB] cursor-pointer transition-colors shadow-sm"
+      >
         <span className="text-[14px] font-medium text-[#1E222B]">
           Import external funds.
         </span>
         <ChevronRight className="w-4 h-4 text-[#7C7E8C]" />
       </div>
+
+      {/* Import External Funds Modal */}
+      <ImportFundsModal
+        isOpen={importModalOpen}
+        onClose={() => setImportModalOpen(false)}
+        userName={facts.userName}
+      />
     </div>
   );
 }
