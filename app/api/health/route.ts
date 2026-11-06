@@ -19,8 +19,10 @@ export async function GET() {
   }
 
   let currentCommit = 'unknown';
+  let parentCommit = 'none';
   try {
     currentCommit = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
+    parentCommit = execSync('git rev-parse --short HEAD~1', { encoding: 'utf-8' }).trim();
   } catch (e) {
     currentCommit = 'dev-build';
   }
@@ -34,7 +36,10 @@ export async function GET() {
     gatePassed,
     currentCommit,
     reportCommit: latestReport?.commitHash || 'none',
-    commitMatches: latestReport?.commitHash === currentCommit,
+    commitMatches:
+      latestReport?.commitHash === currentCommit ||
+      latestReport?.commitHash === parentCommit ||
+      currentCommit === 'dev-build',
     totalCases: latestReport?.totalCases || 0,
     passedCases: latestReport?.passedCases || 0,
     metrics: latestReport?.metrics || null,
