@@ -511,7 +511,7 @@ Absolute return shows your actual cash profit, while XIRR accounts for the time 
       const returnAmtStr = formatRupees(Math.abs(facts.absoluteReturnAmount), 'sentence', false);
       const returnPctStr = facts.returnPercentStr; // e.g. "-4.87%"
       const answer = isHinglish
-        ? `Aapke ₹${facts.totalInvestedAmount} invest hone par kul ${facts.totalUnitsAllotted} units mili hain. Aaj market NAV ₹${facts.currentNav} hai, isliye current value ₹${facts.currentValue} dikh rahi hai. Returns filhal -₹${returnAmtStr} (${returnPctStr}) hain. Short-term mein NAV upar-neeche hoti rehti hai, lekin aapki units safely aapke account mein rehti hain.`
+        ? `Aapke ₹${facts.totalInvestedAmount} invest hone par kul ${facts.totalUnitsAllotted} units mili hain. Aaj market NAV ₹${facts.currentNav} hai, isliye current value ₹${facts.currentValue} dikh rahi hai. Returns filhal -₹${returnAmtStr} (${returnPctStr}) hain. Short-term mein NAV upar-neeche hoti rehti hai, lekin aapki units aapke account mein credited rehti hain.`
         : `You have invested ₹${facts.totalInvestedAmount} across 2 instalments, accumulating ${facts.totalUnitsAllotted} units. Because today's NAV is ₹${facts.currentNav}, your current value is ₹${facts.currentValue}, showing total returns of -₹${returnAmtStr} (${returnPctStr}). Short-term NAV moves fluctuate with market prices, but your allotted units remain unchanged in your account.`;
 
       return {
