@@ -73,3 +73,4 @@ Both failures were compliant but cold. The Companion refused to give advice, whi
 ## 6. Source
 
 Human review sheet: 20 questions, the Companion's answer to each, my PASS or FAIL and one-line reason ([`golden_human_sheet.csv`](file:///Users/tanishq/Desktop/NextLeap/MVP/evals/golden_human_sheet.csv)).
+
