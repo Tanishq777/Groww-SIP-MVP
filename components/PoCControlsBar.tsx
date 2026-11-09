@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Sliders, ShieldCheck, FileText, ChevronUp, ChevronDown, Check } from 'lucide-react';
+import { Sliders, ShieldCheck, ChevronUp, ChevronDown, Check } from 'lucide-react';
 import { ScenarioId } from '@/lib/types';
 import { SCENARIOS } from '@/lib/mockData';
 
@@ -81,21 +81,13 @@ export function PoCControlsBar({
             })}
           </div>
 
-          <div className="pt-2 border-t border-gray-700 flex items-center justify-between text-[11px] text-gray-400">
+          <div className="pt-2 border-t border-gray-700 flex items-center justify-center text-[11px] text-gray-400">
             <Link
               href="/evals"
-              className="hover:text-[#00D09C] flex items-center gap-1 transition-colors"
+              className="hover:text-[#00D09C] flex items-center gap-1.5 transition-colors"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-[#00D09C]" />
-              View Eval Report
-            </Link>
-
-            <Link
-              href="/admin/logs"
-              className="hover:text-[#00D09C] flex items-center gap-1 transition-colors"
-            >
-              <FileText className="w-3.5 h-3.5" />
-              Mentor Logs
+              <span>View Eval Report</span>
             </Link>
           </div>
         </div>

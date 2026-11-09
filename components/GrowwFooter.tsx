@@ -13,10 +13,6 @@ export function GrowwFooter() {
           <Link href="/evals" className="hover:text-[#00D09C] transition-colors">
             AI Evals & Gate Report
           </Link>
-          <span>·</span>
-          <Link href="/admin/logs" className="hover:text-[#00D09C] transition-colors">
-            Mentor Logs (/admin/logs)
-          </Link>
         </div>
       </div>
     </footer>
