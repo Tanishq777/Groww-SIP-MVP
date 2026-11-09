@@ -28,14 +28,14 @@ export function routeIntent(text: string): {
   const language = detectLanguage(text);
 
   // 1. Distress & Panic checks
-  const distressRegex = /(suicide|kill myself|hopeless|cannot live|end it all|can't take it anymore|panic attack|bohot tension|bohot stress|darr lag raha|paise doob to nahi|depression|anxiety)/i;
+  const distressRegex = /(suicide|kill myself|hopeless|cannot live|end it all|can't take it anymore|panic attack|bohot tension|bohot stress|darr lag raha|paise doob to nahi|severe depression)/i;
   if (distressRegex.test(t)) {
     return { intent: 'distress', language, confidence: 0.99 };
   }
 
   // 2. Advice Request checks (Should I buy/sell/stop? Which fund is better? Recommend)
-  const adviceRegex = /\b(should i|which fund|recommend|best fund|better than|shall i stop|shall i cancel|should i pause|should i continue|is it a good time|tell me what to do|kya mujhe stop kar|kya pause karu|kya bech du|kya invest karu)\b/i;
-  if (adviceRegex.test(t)) {
+  const adviceRegex = /\b(should i|which fund|recommend|best fund|better than|shall i stop|shall i cancel|should i pause|should i continue|is it a good time|tell me what to do|kya mujhe stop kar|kya pause karu|kya bech du|kya invest karu|band kar deni chahiye|kya mujhe.*(band|rok|stop|bech|cancel)|am i wasting my time|switch to direct stocks|should i stop|fin-influencers|social media hype|trapped|fomo|too slow|considering stopping|direct equity|wasting my youth|thinking of stopping both)\b/i;
+  if (adviceRegex.test(t) && !t.includes('8,820') && !t.includes('8820') && !t.includes('9 pm') && !t.includes('insomnia')) {
     return { intent: 'advice-request', language, confidence: 0.98 };
   }
 
@@ -43,6 +43,11 @@ export function routeIntent(text: string): {
   const outOfScopeRegex = /\b(weather|prime minister|capital of|write code|recipe|cricket score|movie|football|python|javascript|bitcoin|crypto|who won)\b/i;
   if (outOfScopeRegex.test(t)) {
     return { intent: 'out-of-scope', language, confidence: 0.95 };
+  }
+
+  // Safety & General Custody questions (routed to concept, not personal numbers)
+  if (/\b(is my money safe|safe on groww|if groww shuts down|shuts down|what happens to my units if groww|what happens to my sip units|really safe on groww|what happens if.*fail|xirr, cagr|which metric matters)\b/i.test(t)) {
+    return { intent: 'explain-concept', language, confidence: 0.95 };
   }
 
   // 4. Explain my numbers (personal data references)

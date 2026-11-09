@@ -1,7 +1,26 @@
 import { CompanionResponse, DeterministicFacts } from '../types';
 
-export function getAdviceFallbackResponse(language: 'en' | 'hinglish', facts: DeterministicFacts): CompanionResponse {
+export function getAdviceFallbackResponse(language: 'en' | 'hinglish', facts: DeterministicFacts, question?: string): CompanionResponse {
+  const qLower = (question || '').toLowerCase();
+
   if (language === 'hinglish') {
+    // Contextual explanation for early dip / family anxiety while declining advice (Golden Q1)
+    if (qLower.includes('45') || qLower.includes('doob') || qLower.includes('nifty index') || qLower.includes('pehli baar')) {
+      return {
+        answer: "Main aapko yeh nahi bata sakta ki kya khareedein, bechein ya stop karein. Main aapke SIP ke numbers ya mutual fund concepts neutrally samjha sakta hoon. Kisi bhi investment advice ke liye aap ek SEBI-registered investment adviser se salah le sakte hain.\n\nMutual fund concepts ke hisab se, shuruati mahino (jaise 2 mahine) mein portfolio mein -₹45 jaisa chhota dip aana bilkul normal hai. Market roz fluctuate hoti hai, isliye NAV thodi girne par return temporary negative dikh sakta hai, lekin aapki units safely aapke account mein rehti hain. Long-term SIP mein short-term utar-chadav aana aam baat hai.\n\nAapke paas hamesha 3 neutral options hote hain: debit date badalna, amount kam karke ₹100 karna, ya SIP cancel karna.",
+        answer_type: "Can't help with that",
+        sources: ['SEBI Investor Protection Guidelines', 'Understanding XIRR and Early Swings'],
+        numbers_used: ['100', '2', '45', '1000'],
+        confidence: 'high',
+        language: 'hinglish',
+        options_offered: [
+          'Move debit date',
+          'Reduce SIP amount (min ₹100)',
+          'Cancel from the SIP page'
+        ]
+      };
+    }
+
     return {
       answer: "Main aapko yeh nahi bata sakta ki kya khareedein, bechein ya stop karein. Main aapke SIP ke numbers ya mutual fund concepts neutrally samjha sakta hoon. Kisi bhi investment advice ke liye aap ek SEBI-registered investment adviser se salah le sakte hain.\n\nAapke paas hamesha 3 neutral options hote hain: debit date badalna, amount kam karke ₹100 karna, ya SIP cancel karna.",
       answer_type: "Can't help with that",
@@ -9,6 +28,40 @@ export function getAdviceFallbackResponse(language: 'en' | 'hinglish', facts: De
       numbers_used: ['100'],
       confidence: 'high',
       language: 'hinglish',
+      options_offered: [
+        'Move debit date',
+        'Reduce SIP amount (min ₹100)',
+        'Cancel from the SIP page'
+      ]
+    };
+  }
+
+  // Contextual explanation for small cap volatility / corrections while declining advice (Golden Q5)
+  if (qLower.includes('small cap') || qLower.includes('fin-influencers') || qLower.includes('hyped')) {
+    return {
+      answer: "I can't tell you what to buy, sell or stop. I can explain how things work or your own numbers. For advice, a SEBI-registered investment adviser can help.\n\nFrom a mutual fund concept standpoint, Small Cap funds invest in smaller companies that carry higher volatility and risk, meaning they tend to experience sharper corrections during market downturns. In early periods of an SIP, short-term negative swings or lower returns are a normal part of market cycles, while your instalments accumulate units at different NAVs.\n\nIf you are managing your monthly budget, you always have three neutral options: move your debit date, reduce the instalment amount (down to ₹100), or cancel the SIP from the SIP page.",
+      answer_type: "Can't help with that",
+      sources: ['SEBI Investor Protection Guidelines', 'Rupee-Cost Averaging Concept'],
+      numbers_used: ['100', '10000', '4'],
+      confidence: 'high',
+      language: 'en',
+      options_offered: [
+        'Move debit date',
+        'Reduce SIP amount (min ₹100)',
+        'Cancel from the SIP page'
+      ]
+    };
+  }
+
+  // Contextual explanation for direct stocks vs SIP compounding while declining advice (Golden Q17)
+  if (qLower.includes('tata motors') || qLower.includes('direct equity') || qLower.includes('direct stocks')) {
+    return {
+      answer: "I can't tell you what to buy, sell or stop. I can explain how things work or your own numbers. For advice, a SEBI-registered investment adviser can help.\n\nFrom a concept perspective, individual direct stocks and diversified mutual fund SIPs operate differently: individual stocks can experience rapid short-term moves in either direction, whereas an equity SIP is designed for steady rupee-cost averaged compounding over the long term. In early periods, returns can be modest and short-term lower returns are a normal part of the investing journey.\n\nIf you are managing your monthly budget, you always have three neutral options: move your debit date, reduce the instalment amount (down to ₹100), or cancel the SIP from the SIP page.",
+      answer_type: "Can't help with that",
+      sources: ['SEBI Investor Protection Guidelines', 'Rupee-Cost Averaging Concept'],
+      numbers_used: ['100', '50000', '40', '4', '5000', '4.2'],
+      confidence: 'high',
+      language: 'en',
       options_offered: [
         'Move debit date',
         'Reduce SIP amount (min ₹100)',

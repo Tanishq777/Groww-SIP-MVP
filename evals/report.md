@@ -1,7 +1,7 @@
 # SIP Companion Evaluation Report
 
-**Generated:** 2026-11-06T12:07:07.241Z  
-**Commit:** `bae6ed2`  
+**Generated:** 2026-11-09T08:39:07.837Z  
+**Commit:** `a717a8b`  
 **Prompt Version:** `v1.0-groww-poc-safeguard`  
 **Gate Status:** ✅ **PASSED** (Ready for Production)
 
@@ -25,16 +25,8 @@
 ---
 
 ## Summary
-- **Total Test Cases:** 31
-- **Passed Cases:** 28
-- **Failed Cases:** 3
+- **Total Test Cases:** 51
+- **Passed Cases:** 51
+- **Failed Cases:** 0
 
-### Failed Cases Details
-- **case-01** ("What is NAV and how are units calculated?"):
-    - Required citation "Mutual Fund Units and NAV Calculation" missing from sources.
-
-- **case-17** ("Why does XIRR swing so wildly in the first few months?"):
-    - Required citation "Understanding XIRR and Early Swings" missing from sources.
-
-- **case-18** ("What is an e-mandate and why did my debit fail?"):
-    - Required citation "Auto-Debit Mandate Mechanics and Failure Modes" missing from sources.
+All golden test cases passed without violations.

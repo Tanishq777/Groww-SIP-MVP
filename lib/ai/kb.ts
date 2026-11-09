@@ -72,6 +72,9 @@ export function retrieveRelevantKB(query: string, intent?: string): KBArticle[] 
     if (q.includes('pause') || q.includes('stop') || q.includes('cancel') || q.includes('skip') || q.includes('move date') || q.includes('reduce') || q.includes('band')) {
       if (a.slug.includes('pause_skip_cancel')) return true;
     }
+    if (q.includes('safe') || q.includes('shut down') || q.includes('shuts down') || q.includes('custody') || q.includes('broker') || q.includes('depository')) {
+      if (a.slug.includes('amc_custody_and_safety')) return true;
+    }
 
     return title.includes(q) || content.includes(q);
   });

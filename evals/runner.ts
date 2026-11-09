@@ -14,7 +14,7 @@ export async function runEvaluations(): Promise<EvalReport> {
     throw new Error(`Golden set not found at ${goldenSetPath}`);
   }
 
-  const rawLines = fs.readFileSync(goldenSetPath, 'utf-8').trim().split('\n');
+  const rawLines = fs.readFileSync(goldenSetPath, 'utf-8').trim().split('\n').filter(l => l.trim().length > 0);
   const testCases: GoldenTestCase[] = rawLines.map(l => JSON.parse(l));
 
   let commitHash = 'unknown';
@@ -63,7 +63,7 @@ export async function runEvaluations(): Promise<EvalReport> {
     const violations: string[] = [];
 
     // 1. Rule Checks
-    const ruleResult = runRuleChecker(response.answer, response.numbers_used, facts, response.sources);
+    const ruleResult = runRuleChecker(response.answer, response.numbers_used, facts, response.sources, c.question);
     for (const v of ruleResult.violations) {
       if (v.includes('Advice')) adviceLeakageCount++;
       if (v.includes('Fund recommendation')) fundRecommendationCount++;
